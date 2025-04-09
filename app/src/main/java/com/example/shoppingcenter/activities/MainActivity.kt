@@ -1,12 +1,16 @@
-package com.example.shoppingcenter
+package com.example.shoppingcenter.activities
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.shoppingcenter.R
 
 class MainActivity : AppCompatActivity() {
+
+    val categoryList = Category.getAll()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

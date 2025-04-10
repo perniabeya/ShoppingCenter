@@ -27,11 +27,7 @@ class CategoryAdapter(
         holder.itemView.setOnClickListener {
             onClick(position)
         }
-    }
 
-    fun updateItems(items: List<Category>) {
-        this.items = items
-        notifyDataSetChanged()
     }
 }
 

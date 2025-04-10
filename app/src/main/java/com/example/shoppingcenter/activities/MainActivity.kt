@@ -1,14 +1,12 @@
 package com.example.shoppingcenter.activities
 
+import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.GridLayoutManager
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import com.example.shoppingcenter.R
 import com.example.shoppingcenter.adapters.CategoryAdapter
 import com.example.shoppingcenter.data.Category
@@ -38,7 +36,11 @@ class MainActivity : AppCompatActivity() {
 
         adapter = CategoryAdapter(categoryList) { position ->
             val category = categoryList[position]
-            Toast.makeText(this, category.name, Toast.LENGTH_SHORT).show()
+
+            val intent = Intent(this, CategoryActivity::class.java)
+            intent.putExtra("CATEGORY_ID", category.id)
+            intent.putExtra("CATEGORY_NAME", category.name)
+            startActivity(intent)
         }
 
         binding.recyclerView.adapter = adapter

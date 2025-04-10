@@ -5,23 +5,22 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.shoppingcenter.R
-import android.view.View
-import android.widget.Toast
-import com.example.shoppingcenter.data.Category
+import com.example.shoppingcenter.adapters.ProductsAdapter
+import com.example.shoppingcenter.data.Product
 import com.example.shoppingcenter.databinding.ActivityCategoryBinding
-import com.squareup.picasso.Picasso
+import com.example.shoppingcenter.data.ProductsService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class CategoryActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityCategoryBinding
 
-    lateinit var category: Category
+    lateinit var productList: List<Product>
+    lateinit var adapter: ProductsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,43 +35,30 @@ class CategoryActivity : AppCompatActivity() {
             insets
         }
 
-        val id = intent.getStringExtra("SUPERHERO_ID")!!
-        /*getSuperheroById(id)
+        val id = intent.getStringExtra("CATEGORY_ID")!!
+        val name = intent.getStringExtra("CATEGORY_NAME")!!
 
-        binding.navigationBar.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.action_category -> {
-                    binding.appearanceContent.root.visibility = View.VISIBLE
-            }
-            true
+        supportActionBar?.title = name
+
+        adapter = ProductsAdapter(emptyList()) { position ->
+
         }
+        binding.recyclerView.adapter = adapter
+        binding.recyclerView.layoutManager = GridLayoutManager(this, 2)
 
-        binding.navigationBar.selectedItemId = R.id.action_category*/
+        getProductsByCategory(id)
     }
 
     fun loadData() {
-        /*Picasso.get().load(category.image).into(binding.pictureImageView)
-
-        supportActionBar?.title = category.name
-        supportActionBar?.subtitle = category.id
-
-        binding.biographyContent.publisherTextView.text = category.id*/
+        adapter.items = productList
+        adapter.notifyDataSetChanged()
     }
 
-    /*fun getRetrofit(): CategoryService {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://www.")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        return retrofit.create(CategoryService::class.java)
-    }*/
-
-    /*fun getSuperheroById(id: String) {
+    fun getProductsByCategory(id: String) {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val service = getRetrofit()
-                category = service.findSuperheroById(id)
+                val service = ProductsService.getInstance()
+                productList = service.findProductsByCategory(id).products
 
                 CoroutineScope(Dispatchers.Main).launch {
                     loadData()
@@ -82,5 +68,5 @@ class CategoryActivity : AppCompatActivity() {
 
             }
         }
-    }*/
+    }
 }

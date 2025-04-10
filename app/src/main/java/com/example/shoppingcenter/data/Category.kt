@@ -1,4 +1,4 @@
-package com.example.shoppingcenter.activities
+package com.example.shoppingcenter.data
 
 data class Category(
     val id: String,

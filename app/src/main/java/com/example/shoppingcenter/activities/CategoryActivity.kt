@@ -1,5 +1,6 @@
 package com.example.shoppingcenter.activities
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -41,7 +42,11 @@ class CategoryActivity : AppCompatActivity() {
         supportActionBar?.title = name
 
         adapter = ProductsAdapter(emptyList()) { position ->
+            val product = productList[position]
 
+            val intent = Intent(this, ProductActivity::class.java)
+            intent.putExtra("PRODUCT_ID", product.id)
+            startActivity(intent)
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(this, 2)

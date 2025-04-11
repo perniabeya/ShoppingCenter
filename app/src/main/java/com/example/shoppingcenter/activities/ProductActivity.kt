@@ -8,12 +8,16 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.shoppingcenter.R
 import com.example.shoppingcenter.data.Product
 import com.example.shoppingcenter.data.ProductsService
-import com.example.shoppingcenter.databinding.ActivityProductsBinding
+import com.example.shoppingcenter.databinding.ActivityProductBinding
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ProductsActivity : AppCompatActivity() {
-    lateinit var binding: ActivityProductsBinding
+class ProductActivity : AppCompatActivity() {
+    lateinit var binding: ActivityProductBinding
 
     lateinit var product: Product
 
@@ -21,7 +25,7 @@ class ProductsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        binding = ActivityProductsBinding.inflate(layoutInflater)
+        binding = ActivityProductBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -32,15 +36,27 @@ class ProductsActivity : AppCompatActivity() {
 
         val id = intent.getStringExtra("PRODUCT_ID")!!
 
-        fun getRetrofit(): ProductsService{
-            val retrofit = Retrofit.Builder()
-                .baseUrl("https://dummyjson.com/products?sortBy=title&order=asc\n" +
-                        ".then(res => res.json())\n" +
-                        ".then(console.log);")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+        getProductById(id)
+    }
 
-            return retrofit.create(ProductsService::class.java)
+    fun loadData() {
+        supportActionBar?.title = product.title
+        Picasso.get().load(product.thumbnail).into(binding.productImageView)
+    }
+
+    fun getProductById(id: String) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val service = ProductsService.getInstance()
+                product = service.findProductById(id)
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    loadData()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+
+            }
         }
     }
 }

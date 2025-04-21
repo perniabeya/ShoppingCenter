@@ -1,6 +1,9 @@
 package com.example.shoppingcenter.activities
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -39,9 +42,34 @@ class ProductActivity : AppCompatActivity() {
         getProductById(id)
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_activity_product, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_favorite -> {
+                Toast.makeText(applicationContext, "¡Mensaje de ejemplo!", Toast.LENGTH_SHORT).show()
+                return true
+            }
+            R.id.action_share -> {
+
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
     fun loadData() {
         supportActionBar?.title = product.title
+        binding.productTextView.text = product.title
+        binding.descriptionTextView.text = product.description
+        binding.priceTextView.text = "${product.price}€"
+        binding.ratingTextView.text = product.rating.toString()
+
         Picasso.get().load(product.thumbnail).into(binding.productImageView)
+
     }
 
     fun getProductById(id: String) {

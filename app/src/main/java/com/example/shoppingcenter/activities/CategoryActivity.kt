@@ -21,6 +21,7 @@ class CategoryActivity : AppCompatActivity() {
     lateinit var binding: ActivityCategoryBinding
 
     lateinit var productList: List<Product>
+
     lateinit var adapter: ProductsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

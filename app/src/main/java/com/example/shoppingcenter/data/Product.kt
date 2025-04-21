@@ -8,5 +8,9 @@ class ProductsResponse (
 data class Product(
     val id: String,
     val title: String,
-    val thumbnail: String
+    val thumbnail: String,
+    val description: String,
+    val price: Float,
+    val rating: Float
+
 )

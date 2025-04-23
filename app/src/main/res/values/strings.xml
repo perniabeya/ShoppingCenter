@@ -1,7 +1,10 @@
 <resources>
     <string name="app_name">ShoppingCenter</string>
-    <string name="action_search">Search</string>
     <string name="action_favorite">Favorite</string>
     <string name="action_share">Share</string>
+    <string name="dialog_delete_confirmation_title">Are you sure you want to delete it from your favorites list?</string>
+    <string name="dialog_delete_confirmation_message">Do you want to continue with this action?</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
 
 </resources>

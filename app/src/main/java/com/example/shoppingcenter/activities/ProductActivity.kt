@@ -64,11 +64,11 @@ class ProductActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
 
         // Establece el título y el mensaje del diálogo
-        builder.setTitle("¿Estás seguro de borrarlo de tu lista de favoritos?")
-        builder.setMessage("¿Deseas continuar con esta acción?")
+        builder.setTitle(R.string.dialog_delete_confirmation_title)
+        builder.setMessage(R.string.dialog_delete_confirmation_message)
 
         // Define las acciones de los botones
-        builder.setPositiveButton("Sí") { dialog, which ->
+        builder.setPositiveButton(R.string.action_yes) { dialog, which ->
             // Acción cuando se presiona "Sí"
             // Aquí puedes agregar lo que quieres hacer
 
@@ -77,7 +77,7 @@ class ProductActivity : AppCompatActivity() {
             setFavoriteIcon()
         }
 
-        builder.setNegativeButton("No") { dialog, which ->
+        builder.setNegativeButton(R.string.action_no) { dialog, which ->
             // Acción cuando se presiona "No"
             // Aquí puedes agregar lo que quieres hacer
         }

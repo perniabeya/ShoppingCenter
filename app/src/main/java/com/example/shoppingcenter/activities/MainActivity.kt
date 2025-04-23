@@ -12,7 +12,6 @@ import com.example.shoppingcenter.adapters.CategoryAdapter
 import com.example.shoppingcenter.data.Category
 import com.example.shoppingcenter.databinding.ActivityMainBinding
 
-
 class MainActivity : AppCompatActivity() {
 
     val categoryList = Category.getAll()

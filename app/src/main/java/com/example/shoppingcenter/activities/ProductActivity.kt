@@ -3,7 +3,6 @@ package com.example.shoppingcenter.activities
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -12,20 +11,28 @@ import com.example.shoppingcenter.R
 import com.example.shoppingcenter.data.Product
 import com.example.shoppingcenter.data.ProductsService
 import com.example.shoppingcenter.databinding.ActivityProductBinding
+import com.example.shoppingcenter.utils.SessionManager
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import android.content.DialogInterface
+import androidx.appcompat.app.AlertDialog
+import android.widget.Button
 
 class ProductActivity : AppCompatActivity() {
     lateinit var binding: ActivityProductBinding
 
     lateinit var product: Product
+    var isFavorite = false
+    lateinit var favoriteMenu: MenuItem
+
+
+    lateinit var session: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //setContentView(R.layout.activity_product)
         enableEdgeToEdge()
 
         binding = ActivityProductBinding.inflate(layoutInflater)
@@ -37,27 +44,77 @@ class ProductActivity : AppCompatActivity() {
             insets
         }
 
+        session = SessionManager(this)
+
         val id = intent.getStringExtra("PRODUCT_ID")!!
+
+        isFavorite = session.isFavorite(id)
 
         getProductById(id)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_activity_product, menu)
+        this.favoriteMenu = menu.findItem(R.id.action_favorite)
+        setFavoriteIcon()
         return true
     }
+
+    private fun showDialog() {
+        val builder = AlertDialog.Builder(this)
+
+        // Establece el título y el mensaje del diálogo
+        builder.setTitle("¿Estás seguro de borrarlo de tu lista de favoritos?")
+        builder.setMessage("¿Deseas continuar con esta acción?")
+
+        // Define las acciones de los botones
+        builder.setPositiveButton("Sí") { dialog, which ->
+            // Acción cuando se presiona "Sí"
+            // Aquí puedes agregar lo que quieres hacer
+
+            session.removeFavorite(product.id)
+            isFavorite = false
+            setFavoriteIcon()
+        }
+
+        builder.setNegativeButton("No") { dialog, which ->
+            // Acción cuando se presiona "No"
+            // Aquí puedes agregar lo que quieres hacer
+        }
+
+        // Crea y muestra el diálogo
+        val dialog = builder.create()
+        dialog.show()
+    }
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_favorite -> {
-                Toast.makeText(applicationContext, "¡Mensaje de ejemplo!", Toast.LENGTH_SHORT).show()
+                if (!isFavorite) {
+                    session.addFavorite(product.id)
+                    isFavorite = true
+                } else {
+                    showDialog()
+                }
+                setFavoriteIcon()
                 return true
             }
+
             R.id.action_share -> {
 
                 return true
             }
+
             else -> return super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setFavoriteIcon() {
+        if (isFavorite) {
+            favoriteMenu.setIcon(R.drawable.ic_favorite_selected)
+        } else {
+            favoriteMenu.setIcon(R.drawable.ic_favorite)
         }
     }
 
@@ -69,7 +126,6 @@ class ProductActivity : AppCompatActivity() {
         binding.ratingTextView.text = product.rating.toString()
 
         Picasso.get().load(product.thumbnail).into(binding.productImageView)
-
     }
 
     fun getProductById(id: String) {

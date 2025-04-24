@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Centro de Compras</string>
+    <string name="action_favorite">Favorito</string>
+    <string name="action_share">Buscar</string>
+    <string name="dialog_delete_confirmation_title">¿Estás seguro de borrarlo de tu lista de favoritos?</string>
+    <string name="dialog_delete_confirmation_message">¿Deseas continuar con esta acción?</string>
+    <string name="action_yes">Si</string>
+    <string name="action_no">No</string>
+
+    <string name="text_rating">Calificación</string>
+    <string name="text_price">Precio</string>
+</resources>

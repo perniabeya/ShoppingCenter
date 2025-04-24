@@ -2,7 +2,6 @@ package com.example.shoppingcenter.utils
 
 import android.content.Context
 
-
 class SessionManager(context: Context) {
 
     private val sharedPref = context.getSharedPreferences("shopping_session", Context.MODE_PRIVATE)

@@ -1,5 +1,6 @@
 package com.example.shoppingcenter.activities
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -16,18 +17,13 @@ import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
-import android.widget.Button
 
 class ProductActivity : AppCompatActivity() {
     lateinit var binding: ActivityProductBinding
-
     lateinit var product: Product
     var isFavorite = false
     lateinit var favoriteMenu: MenuItem
-
-
     lateinit var session: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -118,12 +114,14 @@ class ProductActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     fun loadData() {
         supportActionBar?.title = product.title
         binding.productTextView.text = product.title
         binding.descriptionTextView.text = product.description
-        binding.priceTextView.text = "${product.price}€"
-        binding.ratingTextView.text = product.rating.toString()
+        binding.priceTextView.text = getString(R.string.text_price) +" : ${product.price}€"
+        binding.ratingTextView.text = getString(R.string.text_rating) + " : ${product.rating}"
+        //binding.ratingTextView.text = product.rating.toString()+R.string.text_rating
 
         Picasso.get().load(product.thumbnail).into(binding.productImageView)
     }
